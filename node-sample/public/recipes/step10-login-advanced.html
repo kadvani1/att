@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+</head>
+<body>
+<header>Step 10. Login Advanced (Account ID/Mobile Number/Virtual Number)
+&nbsp;&nbsp; <a href="step9-video-call.html">Previous Step</a>
+&nbsp;&nbsp; <a href="step11-start-conference.html">Next Step</a>
+&nbsp;&nbsp; <a href="index.html">Home</a>
+</header>
+
+<!-- HTML will go here -->
+<p>
+<select id="tokenScopeSelect" onchange="onTokenScopeSelect()">
+    <option>Select a Account Login Type to start</option>
+    <option value="ACCOUNT_ID">Account ID Login</option>
+    <option value="MOBILE_NUMBER">Mobile Number Login</option>
+    <option value="VIRTUAL_NUMBER">Virtual Number Login</option>
+</select>    
+</p>    
+<p>
+<button id="startLoginButton" onClick="onStartLoginClick()" disabled>Enter Account ID/Virtual Number and Click here to start</button>
+<input type="text" id="loginInput" value="" disabled size="55">
+</p>
+<p>
+<button id="authCodeButton" onClick="onAuthCodeClick()" disabled >Get AT&T Mobile Subscriber Consent</button>
+<input id="authCodeResult" disabled size="55">  
+</p>
+<p>
+<button id="e911AddressButton" onClick="one911AddressClick()" disabled >Collect/Retrieve E911 Adress</button>
+<input id="e911AdressResult" disabled size="110">  
+</p>
+<p>
+<button id="e911AccessTokenButton" onClick="one911AccessTokenClick()" disabled >Create E911 Access Token</button>
+<input id="e911AccessTokenResult" disabled size="40">  
+</p>
+<p>
+<button id="e911IdButton" onClick="onE911IdClick()" disabled >Get E911 Address Identifier</button>
+<input id="e911IDInput" disabled size="70">
+</p>
+<p>
+<button id="createUserAccessTokenButton" onClick="createUserAccessTokenClick()" disabled >Create User Access Token</button>
+<input id="userTokenResult" disabled size="40">
+</p>
+<p>
+<button id="associateUserAccessTokenButton" onClick="associateUserAccessTokenClick()" disabled>Associate User Access Token</button>
+<input id="associatedUserTokenResult" disabled size="40">
+</p>
+<p>
+<button id="loginButton" onClick="onLoginClick()" disabled>Login</button>
+<input id="loginSessionResult" disabled size="60">    
+<button id="logoutButton" onClick="logout()" hidden>Logout</button>
+<input id="errorMessage" value="There is an error. Check console log for details" hidden disabled size="60">
+</p>
+
+<!-- JavaScript will go here -->  
+
+<script type ="text/javascript" src="https://www.attwerbtc.com/ewebrtc/ewebrtc-sdk.min.js"></script>   
+<script type="text/javascript">
+    
+var phone, accessToken, e911Data, tokenScope, myDHS, myDHSURL = 'https://127.0.0.1:9001';
+         
+// On page load, check for URL for a OAuth Redirect
+if (window.location.href.indexOf("?code=") > -1) {
+    tokenScopeSelect.value = "MOBILE_NUMBER";
+    onTokenScopeSelect();
+    authCodeButton.disabled = true;
+    authCodeResult.value = location.search.split('code=')[1];
+    authCodeResult.value = (authCodeResult.value).replace('%7E', '~');
+    authCodeResult.value = (authCodeResult.value).replace('%7E', '~');
+    authCodeResult.value = (authCodeResult.value).replace('%7E', '~');
+    onStartLoginClick();
+}
+
+//Get DHS Configuration Information
+var xhrConfig = new XMLHttpRequest();
+xhrConfig.open('GET', myDHSURL + "/config/");
+xhrConfig.onreadystatechange = function() {
+    if (xhrConfig.readyState == 4) {
+        if (xhrConfig.status == 200) {
+            console.log(xhrConfig.responseText);
+            myDHS = JSON.parse(xhrConfig.responseText);
+            createPhoneObject();
+        } else {
+            console.log(xhrConfig.responseText);
+        }
+    }
+}
+xhrConfig.send(); 
+    
+function createPhoneObject() {
+    phone = ATT.rtc.Phone.getPhone();
+    registerEvents();
+}
+
+function registerEvents() {
+    phone.on('error', onError); 
+    phone.on('session:ready', onSessionReady);
+    phone.on('session:disconnected', onSessionDisconnected);
+}
+    
+function onError(data) {
+    console.log(data.error);
+    loginButton.disabled = true;
+    errorMessage.hidden = false;
+}
+
+function onSessionReady(data) {
+    loginButton.disabled = true;
+    logoutButton.hidden = false;
+    loginSessionResult.value = "Session ID ".concat(data.sessionId);
+}
+
+function onSessionDisconnected() {
+    logoutButton.hidden = true;
+    window.location ="step10-login-advanced.html"; 
+}
+    
+function onTokenScopeSelect (data) {
+    authCodeButton.disabled = true; // Disabled button on selection change
+    e911AddressButton.disabled = true; // Disabled button on selection change
+    createUserAccessTokenButton.disabled = true; // Disabled button on selection change
+    e911IdButton.disabled = true; // Disabled button on selection change
+    createUserAccessTokenButton.disabled = true; // Disabled button on selection change
+    associateUserAccessTokenButton.disabled = true; // Disabled button on selection change
+    loginButton.disabled = true; // Disabled button on selection change
+    associatedUserTokenResult.placeholder = "Required";
+    userTokenResult.placeholder = "Required";   
+    loginSessionResult.placeholder = "Required";
+    startLoginButton.disabled = false;
+    loginInput.disabled = false;
+    authCodeResult.placeholder = "Not Required";
+    if (tokenScopeSelect.value == "ACCOUNT_ID") {
+        loginInput.placeholder = "Enter Account ID (Ex: alice or bob)";
+        e911AdressResult.placeholder = "Not Required";
+        e911AccessTokenResult.placeholder = "Not Required";
+        e911IDInput.placeholder = "Not Required";
+    }
+    else if (tokenScopeSelect.value == "VIRTUAL_NUMBER") { 
+        loginInput.placeholder = "Enter Your Assigned Virtual Number (Ex: vtn:1234567890)";
+        e911AdressResult.placeholder = "Required";
+        e911AccessTokenResult.placeholder = "Required";
+        e911IDInput.placeholder = "Required";
+    }
+    else {
+        startLoginButton.disabled = true;
+        loginInput.disabled = true;
+        loginInput.placeholder = "Not Required";
+        authCodeButton.disabled = false;
+        authCodeResult.placeholder = "Get AT&T Subscriber User Consent Authorization Code";
+        e911AdressResult.placeholder = "Required";
+        e911AccessTokenResult.placeholder = "Required";
+        e911IDInput.placeholder = "Required"
+        associatedUserTokenResult.placeholder = "Not Required";
+    }
+}
+
+function onAuthCodeClick() {
+    if (myDHS.info.dhs_platform == 'PHP') { //Use PHP DHS Unverisal OAuth Callback
+        window.location.href = myDHS.oauth_callback + '?redirect_uri=' + window.location.href; 
+    } else { //Use App specific OAuth Callback
+        window.location.href = 'https://api.att.com/oauth/v4/authorize?client_id=' + myDHS.app_key + '&scope=WEBRTCMOBILE&redirect_uri=' + window.location.href;   
+    }
+}
+    
+function onStartLoginClick(){
+    startLoginButton.disabled = true;
+    loginInput.disabled = true;
+    if (tokenScopeSelect.value == "ACCOUNT_ID") {
+        createUserAccessTokenButton.disabled = false;
+        userTokenResult.placeholder = "Next create a user token";
+    }
+    else {
+        e911AddressButton.disabled = false;
+        e911AdressResult.placeholder = "Next collect/retrieve a valid physical address";
+    }    
+}
+      
+function one911AddressClick() {
+    e911AddressButton.disabled = true;
+    e911AdressResult.value = "For demo, we assumed a valid physical address has been entered by user or retrieved from your database";
+    e911AccessTokenButton.disabled = false;
+    e911AccessTokenResult.placeholder = "Next use E911 Scope to create acess token";
+}
+
+function one911AccessTokenClick() {
+    e911AccessTokenResult.placeholder = "Creating E911 access token .....";
+    tokenScope = "E911";
+    createAccessToken();
+}
+
+function onE911IdClick() {
+    e911IDInput.placeholder = "Getting E911 Address ID .....";  
+    createE911Id () ;
+}
+    
+function createUserAccessTokenClick() {
+    userTokenResult.placeholder = "Creating user access token .....";
+    tokenScope = tokenScopeSelect.value;
+    createAccessToken();
+}
+
+function associateUserAccessTokenClick() {
+    associatedUserTokenResult.placeholder = "Associating user access token .....";
+    associateAccessToken();
+}
+    
+function onLoginClick() {
+    login();
+}
+
+function createAccessToken() {
+    var xhrToken = new XMLHttpRequest();
+    xhrToken.open('POST', myDHS.app_token_url);
+    xhrToken.setRequestHeader("Content-Type", "application/json");
+    xhrToken.onreadystatechange = function() {
+        if (xhrToken.readyState == 4) {
+            if (xhrToken.status == 200) {
+                console.log(xhrToken.responseText);
+                accessToken = (JSON.parse(xhrToken.responseText));
+                if (tokenScope == "E911") {
+                    e911AccessTokenButton.disabled = true;
+                    e911AccessTokenResult.value = accessToken.access_token;
+                    e911IdButton.disabled = false;
+                    e911IDInput.placeholder = "Next use the E911 Address & E911 access token to get the E911 ID";
+                } else {
+                    userTokenResult.value = accessToken.access_token;
+                    createUserAccessTokenButton.disabled = true;
+                    if (tokenScope != "MOBILE_NUMBER") {
+                        associateUserAccessTokenButton.disabled = false;
+                        associatedUserTokenResult.placeholder = "Next associated user access token to user";
+                    } else {
+                        loginButton.disabled = false;
+                        loginSessionResult.placeholder = "Next click login to get sesssion ID";
+                    }
+                }
+            } else {
+                console.log(xhrToken.responseText);
+            }
+        }
+    }
+    xhrToken.send(JSON.stringify({app_scope: tokenScope, auth_code: authCodeResult.value}));
+}    
+
+function createE911Id() {
+    var xhrE911 = new XMLHttpRequest();
+    xhrE911.open('POST', myDHS.app_e911id_url);
+    xhrE911.setRequestHeader("Content-Type", "application/json");
+    xhrE911.onreadystatechange = function() {
+        if (xhrE911.readyState == 4) {
+            if (xhrE911.status == 200) {
+                console.log(xhrE911.responseText);
+                e911Data = (JSON.parse(xhrE911.responseText));
+                e911IDInput.value = e911Data.e911Locations.addressIdentifier;
+                e911IdButton.disabled = true;
+                createUserAccessTokenButton.disabled = false;
+                userTokenResult.placeholder = "Next create a user access token";
+            } else {
+                console.log(xhrE911.responseText);
+            }
+        }
+    }
+    xhrE911.send(JSON.stringify({
+        token: accessToken.access_token,
+        address: {
+                    first_name: 'ATT',
+                    last_name: 'Inc',
+                    house_number: '16221',
+                    street: 'NE 72nd Way',
+                    unit: '',
+                    city: 'Redmond',
+                    state: 'WA',
+                    zip: '98052'
+        },
+        is_confirmed: 'true'
+    }));
+}
+ 
+function associateAccessToken() {
+    phone.associateAccessToken({
+        userId: loginInput.value,
+        token: userTokenResult.value,
+        success:    function () {
+                    associatedUserTokenResult.value = "Successfully associated token with user id";
+                    associateUserAccessTokenButton.disabled = true;
+                    loginButton.disabled = false;
+                    loginSessionResult.placeholder = "Next click login to get sesssion ID";
+        },
+        error: onError
+        }) 
+}
+
+function login() {
+    phone.login({token: userTokenResult.value, e911Id: e911IDInput.value});
+}
+
+function logout() {
+    phone.logout();
+}
+    
+</script>
+
+<!-- JavaScript Code Snippets -->
+<p><span><div style="background-color:#EEEEEE; font:12px; padding-left:5px; width:850px">        
+<pre>
+
+//Step 10. Login Advanced (Account ID/Mobile Number/Virtual Number)
+
+function onAuthCodeClick() {
+    if (myDHS.dhs_platform == 'DHS') { //Use PHP DHS Unverisal OAuth Callback
+        window.location.href = myDHS.oauth_callback + '?redirect_uri=' + window.location.href; 
+    } else { //Use App specific OAuth Callback
+        window.location.href = 'https://api.att.com/oauth/v4/authorize?client_id=' + myDHS.app_key 
+        + '&scope=WEBRTCMOBILE&redirect_uri=' + window.location.href;   
+    }
+}
+
+function createAccessToken() {
+    var xhrToken = new XMLHttpRequest();
+    xhrToken.open('POST', myDHS.app_token_url);
+    xhrToken.setRequestHeader("Content-Type", "application/json");
+    xhrToken.onreadystatechange = function() {
+        if (xhrToken.readyState == 4) {
+            if (xhrToken.status == 200) {
+                console.log(xhrToken.responseText);
+                accessToken = (JSON.parse(xhrToken.responseText));
+                if (tokenScope == "ACCOUNT_ID") {
+                    associateAccessToken();
+                } else if (tokenScope == "VIRTUAL_NUMBER") {
+                    if (e911Data.e911Locations.addressIdentifier) {
+                        associateAccessToken();
+                    } else {
+                        createAccessToken(); //Use app_scope = "E911"
+                    }
+                } else if (tokenScope == "MOBILE_NUMBER") {
+                    if (e911Data.e911Locations.addressIdentifier) {
+                        login();
+                    } else {
+                        createAccessToken(); //Use app_scope = "E911"
+                    }
+                } else if (tokenScope == "E911") {
+                    createE911Id();
+                } else {
+                    //Do something with this unknown token
+                }
+            } else {
+                console.log(xhrToken.responseText);
+            }
+        }
+    }
+    xhrToken.send(JSON.stringify({app_scope: tokenScope, auth_code: authCodeResult.value}));
+}    
+
+function createE911Id() {
+    var xhrE911 = new XMLHttpRequest();
+    xhrE911.open('POST', myDHS.app_e911id_url);
+    xhrE911.setRequestHeader("Content-Type", "application/json");
+    xhrE911.onreadystatechange = function() {
+        if (xhrE911.readyState == 4) {
+            if (xhrE911.status == 200) {
+                console.log(xhrE911.responseText);
+                e911Data = (JSON.parse(xhrE911.responseText));
+            } else {
+                console.log(xhrE911.responseText);
+            }
+        }
+    }
+    xhrE911.send(JSON.stringify({
+        token: accessToken.access_token,
+        address: {
+                    first_name: 'ATT',
+                    last_name: 'Inc',
+                    house_number: '16221',
+                    street: 'NE 72nd Way',
+                    unit: '',
+                    city: 'Redmond',
+                    state: 'WA',
+                    zip: '98052'
+        },
+        is_confirmed: 'true'
+    }));
+}
+ 
+function associateAccessToken() {
+    phone.associateAccessToken({
+        userId: loginInput.value,
+        token: accessToken.access_token,
+        success: login,
+        error: onError
+    }); 
+}
+
+function login() {
+    phone.login({token: userTokenResult.value, e911Id: e911IDInput.value});
+}
+
+function logout() {
+    phone.logout();
+}
+
+</pre>       
+</div></span></p>
+
+</body>
+</html>

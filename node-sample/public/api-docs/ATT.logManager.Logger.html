@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>JavaScript SDK for AT&T Enhanced WebRTC API Class: Logger</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
+
+</head>
+
+<body>
+<div class="container-fluid">
+	<div class="navbar navbar-fixed-top navbar-inverse">
+		<div class="navbar-inner">
+			<a class="brand" href="index.html">JavaScript SDK for AT&T Enhanced WebRTC API</a>
+			<ul class="nav">
+				
+				<li class="dropdown">
+					<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="ATT.browser.html">ATT.browser</a>
+						</li>
+						
+						<li>
+							<a href="ATT.logManager.html">ATT.logManager</a>
+						</li>
+						
+						<li>
+							<a href="ATT.private.errorStore.APIErrors.html">ATT.private.errorStore.APIErrors</a>
+						</li>
+						
+						<li>
+							<a href="ATT.private.errorStore.SDKErrors.html">ATT.private.errorStore.SDKErrors</a>
+						</li>
+						
+						<li>
+							<a href="ATT.rtc.Phone.html">ATT.rtc.Phone</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="ATT.logManager.Logger.html">ATT.logManager.Logger</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html">Phone</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="events.list.html" class="dropdown-toggle" data-toggle="dropdown">Events<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="Phone.html#event:call:canceled">Phone#call:canceled</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:call:connected">Phone#call:connected</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:call:connecting">Phone#call:connecting</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:call:disconnected">Phone#call:disconnected</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:call:disconnecting">Phone#call:disconnecting</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:call:held">Phone#call:held</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:call:incoming">Phone#call:incoming</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:call:media-modification">Phone#call:media-modification</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:call:modification-in-progress">Phone#call:modification-in-progress</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:call:moved">Phone#call:moved</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:call:muted">Phone#call:muted</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:call:rejected">Phone#call:rejected</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:call:resumed">Phone#call:resumed</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:call:ringback-provided">Phone#call:ringback-provided</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:call:state-changed">Phone#call:state-changed</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:call:transferred">Phone#call:transferred</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:call:transferring">Phone#call:transferring</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:call:unmuted">Phone#call:unmuted</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:conference:canceled">Phone#conference:canceled</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:conference:connected">Phone#conference:connected</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:conference:connecting">Phone#conference:connecting</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:conference:disconnecting">Phone#conference:disconnecting</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:conference:ended">Phone#conference:ended</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:conference:held">Phone#conference:held</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:conference:invitation-accepted">Phone#conference:invitation-accepted</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:conference:invitation-received">Phone#conference:invitation-received</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:conference:invitation-rejected">Phone#conference:invitation-rejected</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:conference:invitation-sending">Phone#conference:invitation-sending</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:conference:invitation-sent">Phone#conference:invitation-sent</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:conference:joining">Phone#conference:joining</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:conference:participant-removed">Phone#conference:participant-removed</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:conference:resumed">Phone#conference:resumed</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:connectivity:off">Phone#connectivity:off</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:connectivity:on">Phone#connectivity:on</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:dtmf:tone-sending">Phone#dtmf:tone-sending</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:dtmf:tone-sent">Phone#dtmf:tone-sent</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:address-updated">Phone#event:address-updated</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:answering">Phone#event:answering</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:dialing">Phone#event:dialing</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:error">Phone#event:error</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:notification">Phone#event:notification</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:warning">Phone#event:warning</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:gateway:unreachable">Phone#gateway:unreachable</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:media:established">Phone#media:established</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:session:call-switched">Phone#session:call-switched</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:session:disconnected">Phone#session:disconnected</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:session:expired">Phone#session:expired</a>
+						</li>
+						
+						<li>
+							<a href="Phone.html#event:session:ready">Phone#session:ready</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+			</ul>
+		</div>
+	</div>
+
+	<div class="row-fluid">
+
+		
+		<div class="span8">
+			
+				<div id="main">
+					
+
+
+	<h1 class="page-title">Class: Logger</h1>
+<section>
+
+<header>
+    <h2>
+        <span class="ancestors"><a href="ATT.logManager.html">.logManager</a>.</span>
+    
+    Logger
+    </h2>
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+
+    
+        
+<dt>
+    <h4 class="name" id="Logger"><span class="type-signature"></span>new Logger<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Logger class</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+            
+<dt>
+    <h4 class="name" id="getLogLevel"><span class="type-signature">&lt;static> </span>getLogLevel<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
+    
+    <p class="summary">Gets the current log level for the current module.</p>
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Use this function to get the current log level for the current module.</p>
+<p>The following strings describe the log level for the current module:</p>
+<ul>
+<li><p><strong>'error'</strong> to log Error</p>
+</li>
+<li><p><strong>'warn'</strong> for Error and Warning</p>
+</li>
+<li><p><strong>'info'</strong> for all of the above and Info</p>
+</li>
+<li><p><strong>'debug'</strong> for all of the above and Debug</p>
+</li>
+<li><p><strong>'trace'</strong> for all of the above and Trace</p>
+</li>
+</ul>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p><code>'error'</code>, <code>'warn'</code>, <code>'info'</code>, <code>'debug'</code>, or <code>'trace'</code></p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">string</span>
+
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">     var logger = ATT.logManager.getLogger(&#x27;moduleName&#x27;),
+         logLevel = logger.getLogLevel();</pre>
+
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="isCustomType"><span class="type-signature">&lt;static> </span>isCustomType<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
+    
+    <p class="summary">Returns true if the logger is a custom logger</p>
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Use this function to check if the logger is a custom logger</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">boolean</span>
+
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="logDebug"><span class="type-signature">&lt;static> </span>logDebug<span class="signature">(message)</span><span class="type-signature"></span></h4>
+    
+    
+    <p class="summary">Logs the passed message as a debug for the current module.</p>
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Use this function to log a message as <code>debug</code> level for the current module.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">     var logger = ATT.logManager.getLogger(&#x27;moduleName&#x27;);
+     logger.logDebug(message);</pre>
+
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="logError"><span class="type-signature">&lt;static> </span>logError<span class="signature">(message)</span><span class="type-signature"></span></h4>
+    
+    
+    <p class="summary">Logs the passed message as an error for the current module.</p>
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Use this function to log a message as <code>error</code> level for the current module.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">     var logger = ATT.logManager.getLogger(&#x27;moduleName&#x27;);
+     logger.logError(message);</pre>
+
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="logInfo"><span class="type-signature">&lt;static> </span>logInfo<span class="signature">(message)</span><span class="type-signature"></span></h4>
+    
+    
+    <p class="summary">Logs the passed message as an info for the current module.</p>
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Use this function to log a message as <code>info</code> level for the current module.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">     var logger = ATT.logManager.getLogger(&#x27;moduleName&#x27;);
+     logger.logInfo(message);</pre>
+
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="logTrace"><span class="type-signature">&lt;static> </span>logTrace<span class="signature">(message, <span class="optional">data</span>)</span><span class="type-signature"></span></h4>
+    
+    
+    <p class="summary">Logs the passed message as a trace for the current module.</p>
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Use this function to log a message as <code>trace</code> level for the current module.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+		<th>Argument</th>
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>message to log</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>additional data to log</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">     var logger = ATT.logManager.getLogger(&#x27;moduleName&#x27;);
+     logger.logTrace(message);</pre>
+
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="logWarning"><span class="type-signature">&lt;static> </span>logWarning<span class="signature">(message)</span><span class="type-signature"></span></h4>
+    
+    
+    <p class="summary">Logs the passed message as a warning for the current module.</p>
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Use this function to log a message as <code>warn</code> level for the current module.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">     var logger = ATT.logManager.getLogger(&#x27;moduleName&#x27;);
+     logger.logWarning(message);</pre>
+
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="setLogLevel"><span class="type-signature">&lt;static> </span>setLogLevel<span class="signature">(level)</span><span class="type-signature"></span></h4>
+    
+    
+    <p class="summary">Sets the passed log level for the current module.</p>
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Use this function to set a log level for the current module.</p>
+<p>Pass the following strings to set the level:</p>
+<ul>
+<li><p><strong>'error'</strong> to log Error</p>
+</li>
+<li><p><strong>'warn'</strong> for Error and Warning</p>
+</li>
+<li><p><strong>'info'</strong> for all of the above and Info</p>
+</li>
+<li><p><strong>'debug'</strong> for all of the above and Debug</p>
+</li>
+<li><p><strong>'trace'</strong> for all of the above and Trace</p>
+</li>
+</ul>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>level</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">     var logger = ATT.logManager.getLogger(&#x27;moduleName&#x27;);
+     logger.setLogLevel(level);</pre>
+
+
+    
+</dd>
+
+        </dl>
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+				</div>
+
+				<div class="clearfix"></div>
+				<footer>
+					
+					
+		<span class="copyright">
+		AT&T
+		</span>
+					<br />
+					
+		<span class="jsdoc-message">
+		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a>
+		on 2015-12-04T15:55:51-08:00 using the <a
+			href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		</span>
+				</footer>
+			</div>
+
+			
+			<div class="span3">
+				<div id="toc"></div>
+			</div>
+			
+			<br clear="both">
+		</div>
+
+	</div>
+	<!--<script src="scripts/sunlight.js"></script>-->
+	<script src="scripts/docstrap.lib.js"></script>
+	<script src="scripts/bootstrap-dropdown.js"></script>
+	<script src="scripts/toc.js"></script>
+
+	<script>
+		$( function () {
+			$( "[id*='$']" ).each( function () {
+				var $this = $( this );
+
+				$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+			} );
+
+			$( "#toc" ).toc( {
+				anchorName  : function ( i, heading, prefix ) {
+					return $( heading ).attr( "id" ) || ( prefix + i );
+				},
+				selectors   : "h1,h2,h3,h4",
+				showAndHide : false,
+				scrollTo    : "100px"
+			} );
+
+			$( "#toc>ul" ).addClass( "nav nav-pills nav-stacked" );
+			$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+			$( '.dropdown-toggle' ).dropdown();
+//			$( ".tutorial-section pre, .readme-section pre" ).addClass( "sunlight-highlight-javascript" ).addClass( "linenums" );
+
+			$( ".tutorial-section pre, .readme-section pre" ).each( function () {
+				var $this = $( this );
+
+				var example = $this.find( "code" );
+				exampleText = example.html();
+				var lang = /{@lang (.*?)}/.exec( exampleText );
+				if ( lang && lang[1] ) {
+					exampleText = exampleText.replace( lang[0], "" );
+					example.html( exampleText );
+					lang = lang[1];
+				} else {
+					lang = "javascript";
+				}
+
+				if ( lang ) {
+
+					$this
+						.addClass( "sunlight-highlight-" + lang )
+						.addClass( "linenums" )
+						.html( example.html() );
+
+				}
+			} );
+
+			Sunlight.highlightAll( {
+				lineNumbers : true,
+				showMenu : true,
+				enableDoclinks : true
+			} );
+		} );
+	 </script>
+
+
+
+	<!--Navigation and Symbol Display-->
+	
+
+
+	<!--Google Analytics-->
+	
+
+</body>
+</html>

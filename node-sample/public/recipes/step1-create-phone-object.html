@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+</head>
+<body>
+
+<header>Step 1. Get DHS Configuration &amp; Create Phone Object
+&nbsp;&nbsp; <a href="step2-login-logout.html">Next Step</a>
+&nbsp;&nbsp; <a href="index.html">Home</a>
+</header>
+    
+<!-- HTML will go here -->
+    
+<!-- Step 1a: HTML Phone Objects UI -->
+<p>
+<button id="createPhoneObjectButton" onclick="createPhoneObject()">Create Phone Object</button>
+<button id="createPhoneSuccessButton" hidden disabled>Phone Object Created Successfully</button>
+</p>
+
+<!-- JavaScript will go here -->  
+
+<!-- Step 1b: Configure Phone Objects and Register Events-->
+
+<script type ="text/javascript" src="https://www.attwerbtc.com/ewebrtc/ewebrtc-sdk.min.js"></script>   
+<script type="text/javascript">
+ 
+var phone, myDHS, myDHSURL = 'https://127.0.0.1:9001';
+    
+//Get DHS Configuration Information
+var xhrConfig = new XMLHttpRequest();
+xhrConfig.open('GET', myDHSURL + "/config");
+xhrConfig.onreadystatechange = function() {
+    if (xhrConfig.readyState == 4) {
+        if (xhrConfig.status == 200) {
+            console.log(xhrConfig.responseText);
+            myDHS = JSON.parse(xhrConfig.responseText);
+        } else {
+            console.log(xhrConfig.responseText);
+        }
+    }
+}
+xhrConfig.send();  
+    
+function createPhoneObject() {
+    phone = ATT.rtc.Phone.getPhone();
+    registerEvents();
+    createPhoneObjectButton.hidden = true;
+    createPhoneSuccessButton.hidden = false;
+}
+    
+function onError(data) {
+    console.log(data.error);
+}
+  
+function registerEvents() {
+    phone.on('error', onError); 
+}
+
+</script>
+
+<!-- JavaScript Code Snippets -->
+<p><span><div style="background-color:#EEEEEE; font:12px; padding-left:5px; width:500px">        
+<pre>
+
+//Step 1. Get DHS Configuration &amp; Create Phone Object
+
+var phone, myDHS, myDHSURL = 'your_dhs_url';
+
+//Get DHS Configuration Information
+var xhrConfig = new XMLHttpRequest();
+xhrConfig.open('GET', myDHSURL + "/config");
+xhrConfig.onreadystatechange = function() {
+    if (xhrConfig.readyState == 4) {
+        if (xhrConfig.status == 200) {
+            console.log(xhrConfig.responseText);
+            myDHS = JSON.parse(xhrConfig.responseText);
+        } else {
+            console.log(xhrConfig.responseText);
+        }
+    }
+}
+xhrConfig.send();  
+
+function createPhoneObject() {
+    phone = ATT.rtc.Phone.getPhone();
+    registerEvents();
+}
+
+function registerEvents() {
+    phone.on('error', onError); 
+}
+
+function onError(data) {
+    console.log(data.error);
+}
+  
+</pre>       
+</div></span></p>
+
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+</head>
+<body>
+<header>Step 2. Login and Logout (Account ID Users)
+&nbsp;&nbsp; <a href="step1-create-phone-object.html">Previous Step</a>
+&nbsp;&nbsp; <a href="step3-make-answer.html">Next Step</a>
+&nbsp;&nbsp; <a href="index.html">Home</a>
+</header>
+
+<!-- HTML will go here -->
+    
+<!-- Step 1a: HTML Phone Objects UI -->
+<p>
+<button id="createPhoneObjectButton" onclick="createPhoneObject()">Create Phone Object</button>
+<button id="createPhoneSuccessButton" hidden disabled>Phone Object Created Successfully</button>
+</p>
+    
+<!-- Step 2a: HTML Login and Logout UI -->
+<p>
+<input type="text" id="loginInput" placeholder="Example: alice or bob" size="30" hidden>
+<button id="loginButton" onclick="createAccessToken()" hidden>Account ID Login</button>
+<button id="logoutButton" onclick="logout()" hidden>Logout</button>
+</p>
+
+<!-- JavaScript will go here -->
+
+<!-- Step 1b: Configure Phone Objects and Register Events-->
+
+<script type ="text/javascript" src="https://www.attwerbtc.com/ewebrtc/ewebrtc-sdk.min.js"></script>   
+<script type="text/javascript">
+ 
+var phone, accessToken, myDHS, myDHSURL = 'https://127.0.0.1:9001';
+    
+//Get DHS Configuration Information
+var xhrConfig = new XMLHttpRequest();
+xhrConfig.open('GET', myDHSURL + "/config/");
+xhrConfig.onreadystatechange = function() {
+    if (xhrConfig.readyState == 4) {
+        if (xhrConfig.status == 200) {
+            console.log(xhrConfig.responseText);
+            myDHS = JSON.parse(xhrConfig.responseText);
+        } else {
+            console.log(xhrConfig.responseText);
+        }
+    }
+}
+xhrConfig.send();  
+
+function createPhoneObject() {
+    phone = ATT.rtc.Phone.getPhone();
+    registerEvents();
+    createPhoneObjectButton.hidden = true;
+    createPhoneSuccessButton.hidden = false;
+    loginInput.hidden = false; // Added in Step 2
+    loginButton.hidden = false; // Added in Step 2
+}
+    
+function onError(data) {
+    console.log(data.error);
+}
+  
+function registerEvents() {
+    phone.on('error', onError); 
+    phone.on('session:ready', onSessionReady); // Added in Step 2
+    phone.on('session:disconnected', onSessionDisconnected); // Added in Step 2
+}
+    
+// Step 2b: Login and Logout
+function onSessionReady() {
+    loginButton.hidden = true;
+    logoutButton.hidden = false;
+}
+    
+function onSessionDisconnected() {
+    loginButton.hidden = false;
+    logoutButton.hidden = true;
+}
+          
+function createAccessToken() {
+    var xhrToken = new XMLHttpRequest();
+        xhrToken.open('POST', myDHS.app_token_url);
+        xhrToken.setRequestHeader("Content-Type", "application/json");
+        xhrToken.onreadystatechange = function() {
+            if (xhrToken.readyState == 4) {
+                if (xhrToken.status == 200) {
+                    console.log(xhrToken.responseText);
+                    accessToken = (JSON.parse(xhrToken.responseText));
+                    associateAccessToken();
+                } else {
+                    console.log(xhrToken.responseText);
+                }
+            }
+        }
+        xhrToken.send(JSON.stringify({app_scope: "ACCOUNT_ID"}));
+}
+    
+function associateAccessToken() {
+    phone.associateAccessToken({
+        userId: loginInput.value,
+        token: accessToken.access_token,
+        success: login,
+        error: onError
+    }); 
+}
+
+function login() {
+    phone.login({token: accessToken.access_token});
+}
+    
+function logout() {
+    phone.logout();
+}
+
+</script>
+
+<!-- JavaScript Code Snippets -->
+<p><span><div style="background-color:#EEEEEE; font:12px; padding-left:5px; width:500px">         
+<pre>
+
+//Step 2. Login and Logout
+
+function registerEvents() {
+    phone.on('session:ready', onSessionReady);
+    phone.on('session:disconnected', onSessionDisconnected);
+}
+
+function onSessionReady() {
+    // Do something
+}
+    
+function onSessionDisconnected() {
+    // Do something
+}
+       
+function createAccessToken() {
+    var xhrToken = new XMLHttpRequest();
+        xhrToken.open('POST', myDHS.app_token_url);
+        xhrToken.setRequestHeader("Content-Type", "application/json");
+        xhrToken.onreadystatechange = function() {
+            if (xhrToken.readyState == 4) {
+                if (xhrToken.status == 200) {
+                    console.log(xhrToken.responseText);
+                    accessToken = (JSON.parse(xhrToken.responseText));
+                    associateAccessToken();
+                } else {
+                    console.log(xhrToken.responseText);
+                }
+            }
+        }
+        xhrToken.send(JSON.stringify({app_scope: "ACCOUNT_ID"}));
+}
+    
+function associateAccessToken() {
+    phone.associateAccessToken({
+        userId: loginInput.value,
+        token: accessToken.access_token,
+        success: login,
+        error: onError
+    }); 
+}
+
+function login() {
+    phone.login({token: accessToken.access_token});
+}
+    
+function logout() {
+    phone.logout();
+}
+
+</pre>       
+</div></span></p>
+
+</body>
+</html>

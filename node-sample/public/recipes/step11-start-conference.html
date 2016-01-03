@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+</head>
+<body>
+<header>Step 11. Conference Start and End
+&nbsp;&nbsp; <a href="step10-login-advanced.html">Previous Step</a>
+&nbsp;&nbsp; <a href="step12-add-participants.html">Next Step</a>
+&nbsp;&nbsp; <a href="index.html">Home</a>
+</header>
+
+<!-- HTML will go here -->
+    
+<!-- Step 1a: HTML Phone Objects UI -->
+<p>
+<button id="createPhoneObjectButton" onclick="createPhoneObject()">Create Phone Object</button>
+<button id="createPhoneSuccessButton" hidden disabled>Phone Object Created Successfully</button>
+</p>
+    
+<!-- Step 2a: HTML Login and Logout UI -->
+<p>
+<input type="text" id="loginInput" placeholder="Example: alice or bob" size="30" hidden>
+<button id="loginButton" onclick="createAccessToken()" hidden>Account ID Login</button>
+<button id="logoutButton" onclick="logout()" hidden>Logout</button>
+</p>
+
+<!-- Step 9a: HTML Add Video Elements -->
+<p>
+<table>
+  <tr>
+    <td><video id="local" style="width:320px;"></td>
+    <td><video id="remote" style="width:320px;"></td>
+  </tr>
+</table>
+</p>
+
+<!-- Step 11: HTML Add Conference -->
+<button id="startConferenceButton" onclick="onStartConference()" hidden>Start Conference</button>
+<button id="endConferenceButton" onclick="endConference()" hidden>End Conference</button>
+
+<!-- JavaScript will go here -->  
+
+<!-- Step 1b: Configure Phone Objects and Register Events-->
+
+<script type ="text/javascript" src="https://www.attwerbtc.com/ewebrtc/ewebrtc-sdk.min.js"></script>   
+<script type="text/javascript">
+    
+var phone, accessToken, myDHS, myDHSURL = 'https://127.0.0.1:9001';
+    
+//Get DHS Configuration Information
+var xhrConfig = new XMLHttpRequest();
+xhrConfig.open('GET', myDHSURL + "/config/");
+xhrConfig.onreadystatechange = function() {
+    if (xhrConfig.readyState == 4) {
+        if (xhrConfig.status == 200) {
+            console.log(xhrConfig.responseText);
+            myDHS = JSON.parse(xhrConfig.responseText);
+        } else {
+            console.log(xhrConfig.responseText);
+        }
+    }
+}
+xhrConfig.send();  
+    
+function onError(data) {
+    console.log(data.error);
+}
+
+function createPhoneObject() {
+    phone = ATT.rtc.Phone.getPhone();
+    registerEvents();
+    createPhoneObjectButton.hidden = true;
+    createPhoneSuccessButton.hidden = false;
+    loginInput.hidden = false; // Added in Step 2
+    loginButton.hidden = false; // Added in Step 2
+}
+
+function registerEvents() {
+    phone.on('error', onError); 
+    phone.on('session:ready', onSessionReady); // Added in Step 2
+    phone.on('session:disconnected', onSessionDisconnected); // Added in Step 2
+    phone.on('conference:connected', onConferenceConnected); // Added in Step 11
+    phone.on('conference:ended', onConferenceEnded); // Added in Step 11
+}
+     
+// Step 2b: Login and Logout
+function onSessionReady() {
+    loginButton.hidden = true;
+    logoutButton.hidden = false;
+    startConferenceButton.hidden = false; // Added in Step 11
+}
+    
+function onSessionDisconnected() {
+    loginButton.hidden = false;
+    logoutButton.hidden = true;
+    startConferenceButton.hidden = true; // Added in Step 11
+    endConferenceButton.hidden = true; // Added in Step 11
+}
+
+function createAccessToken() {
+    var xhrToken = new XMLHttpRequest();
+        xhrToken.open('POST', myDHS.app_token_url);
+        xhrToken.setRequestHeader("Content-Type", "application/json");
+        xhrToken.onreadystatechange = function() {
+            if (xhrToken.readyState == 4) {
+                if (xhrToken.status == 200) {
+                    console.log(xhrToken.responseText);
+                    accessToken = (JSON.parse(xhrToken.responseText));
+                    associateAccessToken();
+                } else {
+                    console.log(xhrToken.responseText);
+                }
+            }
+        }
+        xhrToken.send(JSON.stringify({app_scope: "ACCOUNT_ID"}));
+}
+    
+function associateAccessToken() {
+    phone.associateAccessToken({
+        userId: loginInput.value,
+        token: accessToken.access_token,
+        success: login,
+        error: onError
+    }); 
+}
+
+function login() {
+    phone.login({token: accessToken.access_token});
+}
+    
+function logout() {
+    phone.logout();
+}
+        
+// Step 11b: Start Conference
+function onConferenceConnected () {
+    startConferenceButton.hidden = true;
+    endConferenceButton.hidden = false;
+}
+    
+function onConferenceEnded () {
+    startConferenceButton.hidden = false;
+    endConferenceButton.hidden = true;
+}
+    
+function onStartConference() {
+    startConference ();
+}
+
+function onEndConference() {
+    endConference ();
+}
+
+function startConference() {
+    phone.startConference({
+    mediaType: 'video',
+    localMedia: document.getElementById('local'),
+    remoteMedia: document.getElementById('remote')
+    });
+}
+    
+function endConference() {
+    phone.endConference();
+}
+
+</script>
+
+<!-- JavaScript Code Snippets -->
+<p><span><div style="background-color:#EEEEEE; font:12px; padding-left:5px; width:500px">      
+<pre>
+
+//Step 11. Conference Start and End
+
+function registerEvents() {
+    phone.on('conference:connected', onConferenceConnected);
+    phone.on('conference:ended', onConferenceEnded);
+}
+
+function onConferenceConnected () {
+    // Do something
+}
+    
+function onConferenceEnded () {
+    // Do something
+}
+    
+function onStartConference() {
+    startConference ();
+}
+
+function onEndConference() {
+    endConference ();
+}
+
+function startConference() {
+    phone.startConference({
+    mediaType: 'video',
+    localMedia: document.getElementById('local'),
+    remoteMedia: document.getElementById('remote')
+    });
+}
+    
+function endConference() {
+    phone.endConference();
+}
+    
+</pre>       
+</div></span></p>
+
+</body>
+</html>
